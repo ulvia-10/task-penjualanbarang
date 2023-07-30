@@ -31,7 +31,11 @@
         {
             $data["Barang"] = $this->Barang_Model->getLabaRugi();
             $data["Top5Barang"] = $this->Barang_Model->getLabaRugiTop5();
-            $this->load->view('admin_header');
+            if ($this->session->userdata('IdAkses') == "1") {
+                $this->load->view('admin_header', $data);
+            } else if ($this->session->userdata('IdAkses') == "7"){
+                $this->load->view('kasir_header', $data);
+            }
             $this->load->view('admin_footer');
             $this->load->view('Barang/Barang_dashboard', $data);
         }
@@ -45,12 +49,12 @@
             $this->load->view('Barang/Barang_tambah', $data);
         }
 
-        function sukses()
+        public function sukses()
         {
             redirect(site_url('Barang/Barang_Controller'));
         }
 
-        function gagal()
+        public function gagal()
         {
             echo "<script>alert('Tambah data gagal')</script>";
         }

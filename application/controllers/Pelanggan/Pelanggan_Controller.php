@@ -48,7 +48,11 @@
     	public function index()
     	{
     		$data["Pelanggan"] = $this->Pelanggan_Model->getAll();
-            $this->load->view('admin_header', $data);
+            if ($this->session->userdata('IdAkses') == "1") {
+                $this->load->view('admin_header', $data);
+            } else if ($this->session->userdata('IdAkses') == "7"){
+                $this->load->view('kasir_header', $data);
+            }
             $this->load->view('admin_footer');
     		$this->load->view('Pelanggan/Pelanggan_index', $data);
     	}

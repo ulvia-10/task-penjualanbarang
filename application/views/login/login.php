@@ -47,7 +47,7 @@
       <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col-md-9 col-lg-6 col-xl-5">
-            <img src="<?php echo base_url('assets/img/7036172.jpg') ?>"
+            <img src="<?php echo base_url('assets/img/7036172.png') ?>"
               class="img-fluid" alt="Sample image">
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
