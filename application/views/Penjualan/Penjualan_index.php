@@ -37,7 +37,7 @@
                                         <td><?php echo $data->IdPenjualan; ?></td>
                                         <td><?php echo $data->NamaBarang; ?></td>
                                         <td><?php echo $data->JumlahPenjualan; ?></td>
-                                        <td><?php echo $data->HargaJual; ?></td>
+                                        <td><?php echo "Rp " . number_format($data->HargaBeli,2,',','.'); ?></td>
                                         <td><?php echo $data->NamaPelanggan; ?></td>
                                         <td><?php echo $data->NamaPengguna; ?></td>
                                         <td>

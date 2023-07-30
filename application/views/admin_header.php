@@ -66,6 +66,10 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Admin</div>
+                        <a class="nav-link" href="<?php echo site_url('Barang/Barang_Controller/dashboard') ?>">
+                            <div class="sb-nav-link-icon"><i class="fas fa-balance-scale"></i></div>
+                            Dashboard Laba/Rugi
+                        </a>
                         <a class="nav-link" href="<?php echo site_url('Barang/Barang_Controller') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-balance-scale"></i></div>
                             Kelola Barang

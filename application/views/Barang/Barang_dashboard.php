@@ -3,9 +3,23 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mt-4 mb-4 text-gray-800">Data Pembelian</h1>
-    <a href="<?php echo site_url('Pembelian/Pembelian_Controller/pageTambah') ?>" class="btn btn-primary">Tambah Data</a>
+    <h1 class="h3 mt-4 mb-4 text-gray-800">Dashboard Laba/Rugi Berdasarkan Daftar Barang</h1>
     <div><br></div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-area me-1"></i>
+                    Top 5 Barang Paling Menguntungkan
+                </div>
+                <div class="card-body">
+                    <canvas id="chartTop5Barang" width="100%" height="24">
+                    <img id="url" />    
+                    <!-- <canvas id="myChart2" height="300" width="500"></canvas> -->
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <!-- Column -->
         <div class="col-lg-12 col-md-7">
@@ -16,32 +30,21 @@
                             <thead>
                                 <tr>
                                     <th width="20">No.</th>
-                                    <th>Id Pembelian</th>
                                     <th>Nama Barang</th>
-                                    <th>Jumlah Pembelian</th>
-                                    <th>Harga Beli</th>
-                                    <th>Nama Karyawan</th>
-                                    <th width="130">Aksi</th>
+                                    <th>Laba(+)/Rugi(-)</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $i = 0; ?>
-                                <?php foreach ($Pembelian as $data) {
+                                <?php foreach ($Barang as $data) {
                                 ?>
                                     <tr>
                                         <td>
                                             <?php $i++; ?>
                                             <?php echo $i; ?>
                                         </td>
-                                        <td><?php echo $data->IdPembelian; ?></td>
                                         <td><?php echo $data->NamaBarang; ?></td>
-                                        <td><?php echo $data->JumlahPembelian; ?></td>
-                                        <td><?php echo "Rp " . number_format($data->HargaBeli,2,',','.'); ?></td>
-                                        <td><?php echo $data->NamaPengguna; ?></td>
-                                        <td>
-                                            <a href="<?php echo site_url('Pembelian/Pembelian_Controller/edit/' . $data->IdPembelian) ?>" class="btn btn-success">Ubah</a>
-                                            <a class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modal_hapus<?php echo $data->IdPembelian; ?>" data-backdrop="false"> Hapus</a>
-                                        </td>
+                                        <td><?php echo ($data->keuntungan > 0? " (+) Rp " . number_format($data->keuntungan,2,',','.') : " (-) Rp " . number_format($data->keuntungan,2,',','.'))  ; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -59,21 +62,21 @@
     <i class="fas fa-angle-up"></i>
 </a>
 <?php
-foreach ($Pembelian as $data) {
+foreach ($Barang as $data) {
 ?>
-    <!-- ============ MODAL HAPUS Pembelian =============== -->
-    <div class="modal fade" id="modal_hapus<?php echo $data->IdPembelian; ?>" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+    <!-- ============ MODAL HAPUS BARANG =============== -->
+    <div class="modal fade" id="modal_hapus<?php echo $data->IdBarang; ?>" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" style="padding-top: 30px">
                 <div class="modal-header">
                     <h3 class="modal-title" id="myModalLabel">Hapus</h3>
                 </div>
-                <form class="form-horizontal" method="post" action="<?php echo site_url('Pembelian/Pembelian_Controller/hapus/' . $data->IdPembelian) ?>">
+                <form class="form-horizontal" method="post" action="<?php echo site_url('Barang/Barang_Controller/hapus/' . $data->IdBarang) ?>">
                     <div class="modal-body">
-                        <p>Anda yakin mau menghapus data dengan Id <b><?php echo $data->IdPembelian; ?></b> ?</p>
+                        <p>Anda yakin mau menghapus data dengan nama <b><?php echo $data->NamaBarang; ?></b> ?</p>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="IdPembelian" value="<?php echo $data->IdPembelian; ?>">
+                        <input type="hidden" name="IdBarang" value="<?php echo $data->IdBarang; ?>">
                         <button class="btn btn-secondary" data-dismiss="modal" aria-hidden="true">Tutup</button>
                         <button class="btn btn-danger">Hapus</button>
                     </div>
@@ -104,6 +107,7 @@ foreach ($Pembelian as $data) {
 <!-- Custom scripts for all pages-->
 <script src="<?php echo base_url('assets/js/sb-admin-2.min.js') ?>"></script>
 
+<script src="<?php echo base_url('assets/js/chart.js') ?>"></script>
 <!--Script untuk datatables-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -112,6 +116,52 @@ foreach ($Pembelian as $data) {
         $('#tabeldata').DataTable();
     });
 </script>
+<script type="text/javascript">
+    var ctx = document.getElementById('chartTop5Barang').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+
+        data: {
+            labels: [
+              <?php
+                if (count($Top5Barang)>0) {
+                  foreach ($Top5Barang as $data) {
+                    echo "'" .$data->NamaBarang ."',";
+                  }
+                }
+              ?>
+            ],
+            datasets: [{
+                label: 'Total Keuntungan (Rupiah)',
+                backgroundColor: '#ADD8E6',
+                borderColor: '##93C3D2',
+                data: [
+                  <?php
+                    if (count($Top5Barang)>0) {
+                       foreach ($Top5Barang as $data) {
+                        echo $data->keuntungan . ", ";
+                      }
+                    }
+                  ?>
+                ],
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        steps:4,
+                        stepValue: 20
+                        // max: 60 //max value for the chart is 60
+                        }
+                }]
+            }
+        }
+                
+    });
+    </script>   
 </body>
 
 </html>

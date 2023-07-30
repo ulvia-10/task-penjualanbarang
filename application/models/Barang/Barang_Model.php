@@ -9,6 +9,16 @@ class Barang_Model extends CI_Model
 		return $this->db->query("SELECT * from barang, supplier where barang.IdSupplier = supplier.IdSupplier")->result();
 	}
 
+	public function getLabaRugi()
+	{
+		return $this->db->query("SELECT IdBarang, NamaBarang,(SELECT SUM(jumlahpenjualan) FROM penjualan WHERE idbarang = barang.idbarang) *((SELECT SUM(jumlahpenjualan*hargajual) FROM penjualan WHERE idbarang = barang.idbarang)/(SELECT SUM(jumlahpenjualan) FROM penjualan WHERE idbarang = barang.idbarang) - (SELECT SUM(jumlahpembelian*hargabeli) FROM pembelian WHERE idbarang = barang.idbarang)/(SELECT SUM(jumlahpembelian) FROM pembelian WHERE idbarang = barang.idbarang)) AS keuntungan FROM barang order by keuntungan desc")->result();
+	}
+
+	public function getLabaRugiTop5()
+	{
+		return $this->db->query("SELECT IdBarang, NamaBarang,(SELECT SUM(jumlahpenjualan) FROM penjualan WHERE idbarang = barang.idbarang) *((SELECT SUM(jumlahpenjualan*hargajual) FROM penjualan WHERE idbarang = barang.idbarang)/(SELECT SUM(jumlahpenjualan) FROM penjualan WHERE idbarang = barang.idbarang) - (SELECT SUM(jumlahpembelian*hargabeli) FROM pembelian WHERE idbarang = barang.idbarang)/(SELECT SUM(jumlahpembelian) FROM pembelian WHERE idbarang = barang.idbarang)) AS keuntungan FROM barang order by keuntungan desc limit 5")->result();
+	}
+
 	public function deleteById($id)
 	{
 		$this->db->where('IdBarang', $id);

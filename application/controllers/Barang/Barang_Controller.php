@@ -27,6 +27,15 @@
             else $this->gagal();
         }
 
+        public function dashboard()
+        {
+            $data["Barang"] = $this->Barang_Model->getLabaRugi();
+            $data["Top5Barang"] = $this->Barang_Model->getLabaRugiTop5();
+            $this->load->view('admin_header');
+            $this->load->view('admin_footer');
+            $this->load->view('Barang/Barang_dashboard', $data);
+        }
+
         //fungsi untuk meload page penulis tambah
         public function pageTambah()
         {
