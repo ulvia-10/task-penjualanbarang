@@ -36,7 +36,12 @@
                 $data["StokBarang"] = $value->stok;
             }
             $data["Pelanggan"] = $this->Penjualan_Model->getPelanggan();
-            $this->load->view('admin_header');
+            $IdAkses = $this->session->userdata('IdAkses');
+            if ($IdAkses == "1" || $IdAkses == "2" || $IdAkses == "3") {
+                $this->load->view('admin_header', $data);
+            } else if ($IdAkses == "7"){
+                $this->load->view('kasir_header', $data);
+            }
             $this->load->view('admin_footer');
             $this->load->view('Penjualan/Penjualan_tambah', $data);
         }
@@ -54,9 +59,10 @@
     	public function index()
     	{
     		$data["Penjualan"] = $this->Penjualan_Model->getAll();
-            if ($this->session->userdata('IdAkses') == "1") {
+            $IdAkses = $this->session->userdata('IdAkses');
+            if ($IdAkses == "1" || $IdAkses == "2" || $IdAkses == "3") {
                 $this->load->view('admin_header', $data);
-            } else if ($this->session->userdata('IdAkses') == "7"){
+            } else if ($IdAkses == "7"){
                 $this->load->view('kasir_header', $data);
             }
             $this->load->view('admin_footer');
@@ -81,7 +87,12 @@
             $data["Pelanggan"] = $this->Penjualan_Model->getPelanggan();
             $where = array('IdPenjualan' => $IdPenjualan);
             $data["Penjualan"] = $this->Penjualan_Model->edit($where,'Penjualan') -> result();
-            $this->load->view('admin_header', $data);
+            $IdAkses = $this->session->userdata('IdAkses');
+            if ($IdAkses == "1" || $IdAkses == "2" || $IdAkses == "3") {
+                $this->load->view('admin_header', $data);
+            } else if ($IdAkses == "7"){
+                $this->load->view('kasir_header', $data);
+            }
             $this->load->view('admin_footer', $data);
     		$this->load->view('Penjualan/Penjualan_edit', $data);
         }
