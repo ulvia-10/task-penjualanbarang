@@ -70,13 +70,13 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-balance-scale"></i></div>
                             Dashboard Laba/Rugi
                         </a>
-                        <a class="nav-link" href="<?php echo site_url('Barang/Barang_Controller') ?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-balance-scale"></i></div>
-                            Kelola Barang
-                        </a>
                         <a class="nav-link" href="<?php echo site_url('Supplier/Supplier_Controller') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-briefcase"></i></div>
                             Kelola Supplier
+                        </a>
+                        <a class="nav-link" href="<?php echo site_url('Barang/Barang_Controller') ?>">
+                            <div class="sb-nav-link-icon"><i class="fas fa-balance-scale"></i></div>
+                            Kelola Barang
                         </a>
                         <a class="nav-link" href="<?php echo site_url('Pengguna/Pengguna_Controller') ?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
