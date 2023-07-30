@@ -44,15 +44,8 @@ class Login_Controller extends CI_Controller {
 				if($IdAkses == "1"){
 					redirect(site_url('Barang/Barang_Controller'));
 				}
-				else if ($IdAkses == "2"){
-					redirect(site_url('Tr_Data_Kerja_Cdb/Tr_Data_Kerja_Cdb_Controller'));
-				}
-				else if ($IdAkses == "3"){
-					redirect(site_url('Tr_Data_Kerja_Cdb/Tr_Data_Kerja_Cdb_Controller/dashboardAgent'));
-				}
-				else if ($IdAkses >= "7"){
-					echo "<script>alert('Halaman Team CRM dalam pengerjaan');</script>";
-					$this->load->view("login/login");
+				else if ($IdAkses == "7"){
+					redirect(site_url('Pelanggan/Pelanggan_Controller'));
 				}
 			} else {
 				echo "<script>alert('IdPengguna atau Password salah');</script>";
